@@ -1,0 +1,32 @@
+{
+  "name": "links-docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev",
+    "start": "next start",
+    "types:check": "fumadocs-mdx && next typegen && tsc --noEmit",
+    "postinstall": "fumadocs-mdx"
+  },
+  "dependencies": {
+    "fumadocs-core": "16.4.1",
+    "fumadocs-mdx": "14.2.3",
+    "fumadocs-ui": "16.4.1",
+    "lucide-react": "^0.561.0",
+    "next": "16.0.10",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.18",
+    "@types/mdx": "^2.0.13",
+    "@types/node": "^24.10.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@8.14.1+sha512.856c4ecd97c5d3f30354ebc373cd32fb37274295c489db2d0f613a1e60f010cadfbb15036d525f3a06dec1897e4219b3c4f6d3be8f2f62fb0a366bee6aaa7533"
+}
