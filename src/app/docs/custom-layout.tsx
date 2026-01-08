@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useRef } from "react";
 
 export const DEFAULT_COLUMN_STYLE = `grid-template:
@@ -28,6 +29,8 @@ const TWO_COLUMN_STYLE = `
 `;
 
 export default function CustomLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
   const originalStyleRef = useRef<string | null>(null);
   const originalClassRef = useRef<string | null>(null);
   const originalClassContentRef = useRef<string | null>(null);
@@ -111,7 +114,9 @@ export default function CustomLayout({ children }: { children: ReactNode }) {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [pathname]);
+
+  console.log(pathname)
 
   return <>{children}</>;
 }
