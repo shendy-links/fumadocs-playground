@@ -12,20 +12,11 @@ export const DEFAULT_COLUMN_STYLE = `grid-template:
  --fd-docs-row-2: calc(var(--fd-docs-row-1) + var(--fd-header-height));
  --fd-docs-row-3: calc(var(--fd-docs-row-2) + var(--fd-toc-popover-height));
  --fd-sidebar-col: var(--fd-sidebar-width);
- --fd-page-col: calc(
-   var(--fd-layout-width, 97rem) - var(--fd-sidebar-width) - var(--fd-toc-width)
- );
+ --fd-page-col: calc(var(--fd-layout-width, 97rem) - var(--fd-sidebar-width) - var(--fd-toc-width));
  --fd-sidebar-width: 0px;
  --fd-toc-width: 0px;
  --fd-header-height: 0px;
  --fd-toc-popover-height: 0px;
-`;
-
-const TWO_COLUMN_STYLE = `
-  grid-template-columns: 1fr / minmax(var(--fd-sidebar-col), 1fr);
-  grid-template-areas:
-    "sidebar header"
-    "sidebar main";
 `;
 
 export default function CustomLayout({ children }: { children: ReactNode }) {
@@ -51,30 +42,12 @@ export default function CustomLayout({ children }: { children: ReactNode }) {
       originalClassRef.current = layout.className;
     }
 
-    // const applyTwoColumn = () => {
-    //   if (isApiActiveRef.current) return;
-    //   isApiActiveRef.current = true;
-
-    //   layout.style.cssText = TWO_COLUMN_STYLE;
-
-    //   content.className = "flex flex-col w-full max-w-none mx-auto px-4 py-6 gap-4 md:px-6 md:pt-8 xl:px-8 xl:pt-14 xl:layout:[--fd-toc-width:268px]"
-    // };
-
     const applyTwoColumn = () => {
-      if (!isApiActiveRef.current) {
-        isApiActiveRef.current = true;
-      }
+      if (isApiActiveRef.current) return;
+      isApiActiveRef.current = true;
 
-      // Keep fumadocs grid intact
-      layout.style.setProperty("--fd-toc-width", "0px", "important");
-
-      // Hide TOC node (important)
-      const toc = document.querySelector("[data-fd-toc]");
-      if (toc) toc.classList.add("hidden");
-
-      content.classList.remove("max-w-[900px]");
-
-      content.classList.add("w-full", "max-w-none");
+      content.classList.add("max-w-none");
+      content.style.width = "calc(125% + var(--fd-toc-width))";
     };
 
     const restoreDefault = () => {
@@ -115,8 +88,6 @@ export default function CustomLayout({ children }: { children: ReactNode }) {
       observer.disconnect();
     };
   }, [pathname]);
-
-  console.log(pathname)
 
   return <>{children}</>;
 }
