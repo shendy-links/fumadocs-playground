@@ -1,0 +1,196 @@
+---
+title: Retrive an account
+description: Retrive an account description
+---
+
+<APIHeadline
+  title="Accounts"
+  description="An Account v2 object represents a company, individual, or other entity that interacts with a platform on Stripe. It contains both identifying information and properties that control its behavior and functionality. An Account can have one or more configurations that enable sets of related features, such as allowing it to act as a merchant or customer."
+  endpoints={[
+    { method: "POST", path: "account" },
+    { method: "POST", path: "account/:id" },
+    { method: "GET", path: "account/:id" },
+    { method: "GET", path: "accounts" },
+  ]}
+/>
+
+<APIEndpointContent
+  title="Retrieve an account"
+  description="Retrieves the details of an Account."
+  method="GET"
+  endpoint="/v2/core/accounts/:id"
+  codeExamples={[
+    {
+      language: "typescript",
+      code: `const stripe = require('stripe')('sk_test_51SlMNJx...Y800xS6GsR0');
+      const account = await stripe.v2.core.accounts.retrieve(
+        'acct_1HvBf6Q9RkHgCVdk',
+        {
+          include: ['defaults', 'identity', 'configuration.merchant'],
+        }
+      );`,
+    },
+    {
+      language: "bash",
+      code: `curl https://api.stripe.com/v2/core/accounts/acct_1HvBf6Q9RkHgCVdk \\ -H "Authorization: Bearer sk_test_51SlMNJx...Y800xS6GsR0"`,
+    },
+  ]}
+  parameters={[
+  {
+    name: "id",
+    type: "string",
+    description: "The ID of the Account to retrieve.",
+    required: true,
+    example: "acct_1HvBf6Gu5VAvxPL8X1Z2Y3A4",
+  },
+  {
+    name: "include",
+    type: "array",
+    description: "Additional fields to include in the response.",
+    required: false,
+    child: [
+      {
+        name: "field",
+        type: "enum",
+        description: "Additional fields to include in the response.",
+        enum: [
+          {
+            value: "configuration.customer",
+            description: "Include parameter to expose configuration.customer on an Account.",
+          },
+          {
+            value: "configuration.merchant",
+            description: "Include parameter to expose configuration.merchant on an Account.",
+          },
+          {
+            value: "configuration.recipient",
+            description: "Include parameter to expose configuration.recipient on an Account.",
+          },
+          {
+            value: "defaults",
+            description: "Include parameter to expose defaults on an Account.",
+          },
+          {
+            value: "future_requirements",
+            description:
+              "Include parameter to expose future_requirements on an Account.",
+          },
+          {
+            value: "identity",
+            description: "Include parameter to expose identity on an Account.",
+          },
+          {
+            value: "requirements",
+            description:
+              "Include parameter to expose requirements on an Account.",
+          },
+        ],
+      },
+    ],
+  },
+  ]}
+  returnsSchema={[
+    {
+      name: "id",
+      type: "string",
+      description: "Unique identifier for the Account.",
+      required: true,
+      example: "acct_1HvBf6Gu5VAvxPL8X1Z2Y3A4",
+    },
+    {
+      name: "object",
+      type: "string",
+      description:
+        "String representing the object's type. Value is always 'v2.core.account'.",
+      required: true,
+      default: "v2.core.account",
+    },
+    {
+      name: "applied_configurations",
+      type: "array",
+      description: "The configurations that have been applied to this account.",
+    },
+    {
+      name: "configuration",
+      type: "object",
+      description: "Configuration details for the account.",
+      child: [
+        {
+          name: "customer",
+          type: "object",
+          description: "Customer-specific configuration.",
+          child: [
+            {
+              name: "automatic_indirect_tax",
+              type: "object",
+              description: "Configuration for automatic indirect tax.",
+              child: [
+                {
+                  name: "exempt",
+                  type: "enum",
+                  description: "Tax exemption status.",
+                  enum: [{ value: "none" }, { value: "partial" }],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "contact_email",
+      type: "string",
+      description: "The default contact email address for the Account.",
+    },
+    {
+      name: "created",
+      type: "datetime",
+      description: "Time at which the object was created.",
+    },
+    {
+      name: "dashboard",
+      type: "enum",
+      description: "Indicates which Stripe dashboard this Account has access to.",
+      enum: [
+        {
+          value: "express",
+          description: "The Account has access to the Express hosted dashboard.",
+        },
+        {
+          value: "full",
+          description: "The Account has access to the full hosted dashboard.",
+        },
+        {
+          value: "name",
+          description:
+            "The Account does not have access to any hosted dashboard.",
+        },
+      ],
+    },
+  ]}
+  responseExample={
+    {
+      id: "acct_1HvBf6Gu5VAvxPL8X1Z2Y3A4",
+      object: "v2.core.account",
+      applied_configurations: ["merchant"],
+      configuration: {
+      customer: {
+        automatic_indirect_tax: {
+          exempt: "none",
+        },
+      },
+      },
+      contact_email: "contact@example.com",
+      created: "2024-03-15T10:30:00Z",
+      dashboard: "full",
+    }
+  }
+  errorCodes={[
+    {
+      code: "400 invalid_request",
+      description: "Missing or invalid parameter.",
+      details: "The request is missing a required parameter or contains an invalid value.",
+    },
+  ]}
+  showActions={true}
+/>

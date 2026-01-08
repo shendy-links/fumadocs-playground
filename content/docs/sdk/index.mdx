@@ -1,0 +1,497 @@
+---
+title: Introduction SDK
+description: Introduction SDK Docs
+icon: "Album"
+toc: false
+---
+
+## Links SDK
+
+The Links SDK is designed to be a foundational toolkit for interacting with the Links platform programmatically.
+Rather than exposing a single opinionated workflow, the SDK focuses on composability, type safety, and developer ergonomics, allowing you to build exactly what your application needs.
+
+At its core, the **SDK** aims to:
+
+* **Provide a consistent**: working with Links resources
+* **Abstract**: low-level implementations details
+* **Flexible**: as the platform evolves
+
+<Cards> 
+  <Card icon={<CpuIcon className="text-purple-300" />} href="/docs/sdk/sdk-references/core-sdk" title="Core SDK"> 
+    The foundation of the Links SDK. Handles configuration, shared utilities, request lifecycle management, and common types used across all modules. 
+  </Card>
+
+  <Card icon={<PanelsTopLeft className="text-blue-300" />} href="/#" title="Client Interfaces">
+    High-level interfaces for interacting with Links features.
+    These clients are designed to be intuitive, predictable, and easy to integrate.
+  </Card>
+
+  <Card icon={<Database />} href={"/#"} title="Data & Resources">
+    Structured access to Links resources and entities.
+    This layer focuses on data modeling, serialization, and safe interaction with platform-managed objects.
+  </Card>
+
+  <Card icon={<Terminal />} href={"/#"} title="Tooling & Utilities">
+    Optional utilities that improve developer experience, such as helpers, CLI tooling, or local development enhancements as the SDK matures.
+  </Card>
+</Cards>
+
+<Callout title="Capabilities">
+  Some capabilities may evolve over time, but these pillars define the direction and scope of the SDK.
+</Callout>
+
+Run the app in development mode and see [http://localhost:3000/docs](http://localhost:3000/docs).
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager" persist>
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">
+      npm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="pnpm">
+      pnpm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="yarn">
+      yarn
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="bun">
+      bun
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npm run dev
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm run dev
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn dev
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun run dev
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+### Feature Table
+
+| Feature             | Fumadocs     | Nextra                    |
+| ------------------- | ------------ | ------------------------- |
+| Static Generation   | Yes          | Yes                       |
+| Cached              | Yes          | Yes                       |
+| Light/Dark Mode     | Yes          | Yes                       |
+| Syntax Highlighting | Yes          | Yes                       |
+| Table of Contents   | Yes          | Yes                       |
+| Full-text Search    | Yes          | Yes                       |
+| i18n                | Yes          | Yes                       |
+| Last Git Edit Time  | Yes          | Yes                       |
+| Page Icons          | Yes          | Yes, via `_meta.js` files |
+| RSC                 | Yes          | Yes                       |
+| Remote Source       | Yes          | Yes                       |
+| SEO                 | Via Metadata | Yes                       |
+| Built-in Components | Yes          | Yes                       |
+| RTL Layout          | Yes          | Yes                       |
+
+### Additional Features
+
+Features supported via 3rd party libraries like [TypeDoc](https://typedoc.org) will not be listed here.
+
+| Feature                    | Fumadocs | Nextra |
+| -------------------------- | -------- | ------ |
+| OpenAPI Integration        | Yes      | No     |
+| TypeScript Docs Generation | Yes      | No     |
+| TypeScript Twoslash        | Yes      | Yes    |
+
+
+### Prerequisite
+
+Before continuing, make sure you have configured:
+
+* Next.js 16.
+* Tailwind CSS 4.
+
+We will use [Fumadocs MDX](/docs/mdx) as a content source, you can configure it first:
+
+<div className="fd-steps [&_h3]:fd-step">
+  ### Installation
+
+  <CodeBlockTabs defaultValue="npm" groupId="package-manager" persist>
+    <CodeBlockTabsList>
+      <CodeBlockTabsTrigger value="npm">
+        npm
+      </CodeBlockTabsTrigger>
+
+      <CodeBlockTabsTrigger value="pnpm">
+        pnpm
+      </CodeBlockTabsTrigger>
+
+      <CodeBlockTabsTrigger value="yarn">
+        yarn
+      </CodeBlockTabsTrigger>
+
+      <CodeBlockTabsTrigger value="bun">
+        bun
+      </CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="npm">
+      ```bash
+      npm i fumadocs-mdx fumadocs-core @types/mdx
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="pnpm">
+      ```bash
+      pnpm add fumadocs-mdx fumadocs-core @types/mdx
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="yarn">
+      ```bash
+      yarn add fumadocs-mdx fumadocs-core @types/mdx
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="bun">
+      ```bash
+      bun add fumadocs-mdx fumadocs-core @types/mdx
+      ```
+    </CodeBlockTab>
+  </CodeBlockTabs>
+
+  Create the configuration file:
+
+  ```ts title="source.config.ts"
+  import { defineDocs, defineConfig } from 'fumadocs-mdx/config';
+
+  export const docs = defineDocs({
+    dir: 'content/docs',
+  });
+
+  export default defineConfig();
+  ```
+
+  Add the plugin to Next.js config:
+
+  ```js title="next.config.mjs"
+  import { createMDX } from 'fumadocs-mdx/next';
+
+  /** @type {import('next').NextConfig} */
+  const config = {
+    reactStrictMode: true,
+  };
+
+  // [!code ++:4]
+  const withMDX = createMDX({
+    // customise the config file path
+    // configPath: "source.config.ts"
+  });
+
+  // [!code highlight]
+  export default withMDX(config);
+  ```
+
+  <Callout title="ESM Only" type="warn">
+    Fumadocs MDX is ESM-only, it's recommended to use `next.config.mjs` for accurate ESM resolution.
+
+    For TypeScript config file, it requires Native Node.js TypeScript Resolver, you can see [Next.js docs](https://nextjs.org/docs/app/api-reference/config/typescript#using-nodejs-native-typescript-resolver-for-nextconfigts) for details.
+  </Callout>
+
+  Setup an import alias (recommended):
+
+  ```json title="tsconfig.json"
+  {
+    "compilerOptions": {
+      "paths": {
+        // [!code ++]
+        "fumadocs-mdx:collections/*": [".source/*"]
+      }
+    }
+  }
+  ```
+
+  ### Integrate with Fumadocs
+
+  You can create a `lib/source.ts` file and obtain Fumadocs source from the `docs` collection output.
+
+  ```ts title="lib/source.ts"
+  import { docs } from 'fumadocs-mdx:collections/server';
+  import { loader } from 'fumadocs-core/source';
+
+  export const source = loader({
+    baseUrl: '/docs',
+    source: docs.toFumadocsSource(),
+  });
+  ```
+
+  The `.source` folder will be generated when you run `next dev` or `next build`.
+
+  ### Done
+
+  You can now write content in `content/docs` folder.
+</div>
+
+<Callout title="Good to Know">
+  Fumadocs also supports other content sources, including [Content Collections](/docs/headless/content-collections) and headless CMS.
+</Callout>
+
+## Getting Started
+
+<CodeBlockTabs defaultValue="npm" groupId="package-manager" persist>
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="npm">
+      npm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="pnpm">
+      pnpm
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="yarn">
+      yarn
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="bun">
+      bun
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="npm">
+    ```bash
+    npm i fumadocs-ui fumadocs-core
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="pnpm">
+    ```bash
+    pnpm add fumadocs-ui fumadocs-core
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="yarn">
+    ```bash
+    yarn add fumadocs-ui fumadocs-core
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="bun">
+    ```bash
+    bun add fumadocs-ui fumadocs-core
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+### Root Layout
+
+Wrap the entire application inside [Root Provider](/docs/ui/layouts/root-provider), and add required styles to `body`.
+
+```tsx title="app/layout.tsx"
+import { RootProvider } from 'fumadocs-ui/provider/next';
+import type { ReactNode } from 'react';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body
+        // required styles [!code ++]
+        className="flex flex-col min-h-screen"
+      >
+        <RootProvider>{children}</RootProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+### Styles
+
+Add the following Tailwind CSS styles to `global.css`.
+
+```css title="global.css"
+@import 'tailwindcss';
+/* [!code ++:2] */
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+```
+
+> It doesn't come with a default font, you may choose one from `next/font`.
+
+### Routes
+
+Create a `lib/layout.shared.tsx` file to put the shared options for our layouts.
+
+```tsx title="lib/layout.shared.tsx"
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+
+export function baseOptions(): BaseLayoutProps {
+  return {
+    nav: {
+      title: 'My App',
+    },
+  };
+}
+
+```
+
+Create the following files & routes:
+
+<CodeBlockTabs defaultValue="mdx-components.tsx">
+  <CodeBlockTabsList>
+    <CodeBlockTabsTrigger value="mdx-components.tsx">
+      mdx-components.tsx
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="app/docs/layout.tsx">
+      app/docs/layout.tsx
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="app/docs/[[...slug]]/page.tsx">
+      app/docs/[[...slug]]/page.tsx
+    </CodeBlockTabsTrigger>
+
+    <CodeBlockTabsTrigger value="app/api/search/route.ts">
+      app/api/search/route.ts
+    </CodeBlockTabsTrigger>
+  </CodeBlockTabsList>
+
+  <CodeBlockTab value="mdx-components.tsx">
+    ```tsx
+    import defaultMdxComponents from 'fumadocs-ui/mdx';
+    import type { MDXComponents } from 'mdx/types';
+
+    export function getMDXComponents(components?: MDXComponents): MDXComponents {
+      return {
+        ...defaultMdxComponents,
+        ...components,
+      };
+    }
+
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="app/docs/layout.tsx">
+    ```tsx
+    import { source } from '@/lib/source';
+    import { DocsLayout } from 'fumadocs-ui/layouts/docs';
+    import { baseOptions } from '@/lib/layout.shared';
+
+    export default function Layout({ children }: LayoutProps<'/docs'>) {
+      return (
+        <DocsLayout tree={source.getPageTree()} {...baseOptions()}>
+          {children}
+        </DocsLayout>
+      );
+    }
+
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="app/docs/[[...slug]]/page.tsx">
+    ```tsx
+    import { source } from '@/lib/source';
+    import { DocsBody, DocsDescription, DocsPage, DocsTitle } from 'fumadocs-ui/layouts/docs/page';
+    import { notFound } from 'next/navigation';
+    import { getMDXComponents } from '@/mdx-components';
+    import type { Metadata } from 'next';
+    import { createRelativeLink } from 'fumadocs-ui/mdx';
+
+    export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
+      const params = await props.params;
+      const page = source.getPage(params.slug);
+      if (!page) notFound();
+
+      const MDX = page.data.body;
+
+      return (
+        <DocsPage toc={page.data.toc} full={page.data.full}>
+          <DocsTitle>{page.data.title}</DocsTitle>
+          <DocsDescription>{page.data.description}</DocsDescription>
+          <DocsBody>
+            <MDX
+              components={getMDXComponents({
+                // this allows you to link to other pages with relative file paths
+                a: createRelativeLink(source, page),
+              })}
+            />
+          </DocsBody>
+        </DocsPage>
+      );
+    }
+
+    export async function generateStaticParams() {
+      return source.generateParams();
+    }
+
+    export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): Promise<Metadata> {
+      const params = await props.params;
+      const page = source.getPage(params.slug);
+      if (!page) notFound();
+
+      return {
+        title: page.data.title,
+        description: page.data.description,
+      };
+    }
+
+    ```
+  </CodeBlockTab>
+
+  <CodeBlockTab value="app/api/search/route.ts">
+    ```ts
+    import { source } from '@/lib/source';
+    import { createFromSource } from 'fumadocs-core/search/server';
+
+    export const { GET } = createFromSource(source, {
+      // https://docs.orama.com/docs/orama-js/supported-languages
+      language: 'english',
+    });
+
+    ```
+  </CodeBlockTab>
+</CodeBlockTabs>
+
+> The search is powered by Orama, learn more about [Document Search](/docs/headless/search).
+
+### Finish
+
+You can start the dev server and create MDX files.
+
+```mdx title="content/docs/index.mdx"
+---
+title: Hello World
+---
+
+## Introduction
+
+I love Anime.
+```
+
+
+
+
+### FAQ
+
+Some common questions you may encounter.
+
+<Accordions>
+  <Accordion id="upgrade-fumadocs" title="Getting error with missing APIs or bugs?">
+    Make sure to upgrade Fumadocs when you've encountered any problems or trying out new features:
+
+    ```bash title="pnpm"
+    pnpm update -i -r --latest
+    ```
+  </Accordion>
+</Accordions>

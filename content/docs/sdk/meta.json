@@ -1,0 +1,17 @@
+{
+  "title": "SDK",
+  "description": "root content sdk",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "index",
+    "---SDK---",
+    "sdk-references",
+    "---API---",
+    "api-references",
+    "---Dependencies---",
+    "[Triangle][Vercel](https://vercel.com)",
+    "[SwatchBook][Fumadocs](https://fumadocs.dev)",
+    "[GamepadDirectional][Shadcn](https://https://ui.shadcn.com)"
+  ]
+}

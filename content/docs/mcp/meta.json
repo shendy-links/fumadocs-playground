@@ -1,0 +1,10 @@
+{
+  "title": "MCP",
+  "description": "root content mcp",
+  "root": true,
+  "defaultOpen": true,
+  "pages": [
+    "---Getting Started---",
+    "index"
+  ]
+}

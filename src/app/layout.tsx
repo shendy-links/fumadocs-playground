@@ -1,15 +1,21 @@
-import { RootProvider } from 'fumadocs-ui/provider/next';
-import './global.css';
-import { Inter } from 'next/font/google';
+import { RootProvider } from "fumadocs-ui/provider/next";
+import { Inter } from "next/font/google";
+import "./global.css";
+import 'katex/dist/katex.css';
 
 const inter = Inter({
-  subsets: ['latin'],
+  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
-export default function Layout({ children }: LayoutProps<'/'>) {
+export default function Layout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.className} suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
+    <html
+      lang="en"
+      className={`${inter.className} font-sans antialiased`}
+      suppressHydrationWarning
+    >
+      <body className="flex flex-col min-h-screen overflow-y-scroll">
         <RootProvider>{children}</RootProvider>
       </body>
     </html>
