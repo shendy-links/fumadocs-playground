@@ -48,43 +48,14 @@ description: Retrive an account description
     type: "array",
     description: "Additional fields to include in the response.",
     required: false,
-    child: [
+    enum: [
       {
-        name: "field",
-        type: "enum",
-        description: "Additional fields to include in the response.",
-        enum: [
-          {
-            value: "configuration.customer",
-            description: "Include parameter to expose configuration.customer on an Account.",
-          },
-          {
-            value: "configuration.merchant",
-            description: "Include parameter to expose configuration.merchant on an Account.",
-          },
-          {
-            value: "configuration.recipient",
-            description: "Include parameter to expose configuration.recipient on an Account.",
-          },
-          {
-            value: "defaults",
-            description: "Include parameter to expose defaults on an Account.",
-          },
-          {
-            value: "future_requirements",
-            description:
-              "Include parameter to expose future_requirements on an Account.",
-          },
-          {
-            value: "identity",
-            description: "Include parameter to expose identity on an Account.",
-          },
-          {
-            value: "requirements",
-            description:
-              "Include parameter to expose requirements on an Account.",
-          },
-        ],
+        value: "identity",
+        description: "Include parameter to expose identity on an Account.",
+      },
+      {
+        value: "requirements",
+        description: "Include parameter to expose requirements on an Account.",
       },
     ],
   },
@@ -94,15 +65,14 @@ description: Retrive an account description
       name: "id",
       type: "string",
       description: "Unique identifier for the Account.",
-      required: true,
+      required: false,
       example: "acct_1HvBf6Gu5VAvxPL8X1Z2Y3A4",
     },
     {
       name: "object",
       type: "string",
-      description:
-        "String representing the object's type. Value is always 'v2.core.account'.",
-      required: true,
+      description: "String representing the object's type. Value is always 'v2.core.account'.",
+      required: false,
       default: "v2.core.account",
     },
     {
@@ -124,14 +94,6 @@ description: Retrive an account description
               name: "automatic_indirect_tax",
               type: "object",
               description: "Configuration for automatic indirect tax.",
-              child: [
-                {
-                  name: "exempt",
-                  type: "enum",
-                  description: "Tax exemption status.",
-                  enum: [{ value: "none" }, { value: "partial" }],
-                },
-              ],
             },
           ],
         },

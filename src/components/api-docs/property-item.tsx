@@ -20,7 +20,7 @@ export function PropertyItem({
   const hasNested = property.child && property.child.length > 0;
 
   return (
-    <div id="property-item" className="border-b border-border last:border-b-0">
+    <div id="property-item" className="border-b border-border last:border-b-0 last:mb-0!">
       <div>
         {/* Property name and type - NOT collapsible */}
         <div className="flex items-start gap-3">
@@ -34,9 +34,7 @@ export function PropertyItem({
                 {property.type}
               </Badge>
               {property.required && (
-                <Badge variant="destructive" className="text-xs">
-                  Required
-                </Badge>
+                <span className="text-destructive text-xs font-semibold">Required</span>
               )}
             </div>
 
@@ -46,9 +44,9 @@ export function PropertyItem({
             </p>
 
             {/* Additional info */}
-            <div className="my-3 space-y-2">
+            <div className="my-3 space-y-2 last:m-0">
               {property.default !== undefined && (
-                <div className="text-xs">
+                <div className="text-xs min-h-6 mx-auto flex self-start items-center gap-2 mb-3">
                   <span className="text-muted-foreground">Default: </span>
                   <code className="font-mono text-foreground bg-card px-2 py-1 rounded">
                     {String(property.default)}
@@ -68,7 +66,7 @@ export function PropertyItem({
                           {option.value}
                         </code>
                         {option.description && (
-                          <p className="text-muted-foreground text-xs pl-1">
+                          <p className="text-muted-foreground text-xs pl-1 last:mb-0">
                             {option.description}
                           </p>
                         )}

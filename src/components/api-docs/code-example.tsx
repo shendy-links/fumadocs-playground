@@ -1,5 +1,6 @@
 "use client";
 
+import ShikiHighlighter from "react-shiki";
 import { useState } from "react";
 import { Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
 
 interface CodeExampleProps {
   endpoint: string;
@@ -25,6 +27,33 @@ const METHOD_COLORS: Record<string, string> = {
   PATCH: "bg-purple-500/10 text-purple-700 border-purple-200",
   DELETE: "bg-red-500/10 text-red-700 border-red-200",
 };
+
+export function ShikiCodeBlock({
+  code,
+  lang,
+  theme = { light: "github-dark", dark: "github-light" },
+}: {
+  code: string;
+  lang: string;
+  theme?: { light: string; dark: string };
+}) {
+  return (
+    <ShikiHighlighter
+      tabindex={-1}
+      language={lang}
+      className={cn(
+        "text-sm focus:ring-none focus:outline-none focus:ring-0 [&_pre]:focus:outline-none [&_pre]:focus:ring-0 [&_pre]:focus-visible:outline-none [&_pre]:focus-visible:ring-0",
+        "[&_pre]:rounded-t-none!",
+        "[&_pre]:rounded-bl-lg!",
+        "[&_pre]:rounded-br-lg!"
+      )}
+      theme={theme}
+      langStyle={{ display: "none" }}
+    >
+      {code.trim()}
+    </ShikiHighlighter>
+  );
+}
 
 export function CodeExample({
   endpoint,
@@ -48,27 +77,26 @@ export function CodeExample({
   };
 
   return (
-    <div className="bg-slate-800 rounded-lg overflow-hidden border border-slate-700">
-      {/* Header with Method and Language Selector */}
-      <div className="flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-slate-700">
+    <div className="bg-foreground/90 dark:bg-background/90 rounded-lg overflow-hidden border dark:border-b-background/90">
+      <div className="flex items-center justify-between px-3 py-1 border-b border-b-foreground/90 dark:border-b-background/90">
         <div className="flex items-center gap-3">
           <span
-            className={`px-3 py-1 rounded text-xs font-semibold border ${
-              METHOD_COLORS[method] || "bg-gray-500/10 text-gray-700"
-            }`}
+            className={cn(
+              METHOD_COLORS[method],
+              "px-3 py-1 rounded text-xs font-semibold border bg-white"
+            )}
           >
             {method}
           </span>
-          <code className="text-sm text-slate-300 font-mono">{endpoint}</code>
+          <span className="text-white font-semibold text-xs">{endpoint}</span>
         </div>
-
         <div className="flex items-center gap-2">
           {examples.length > 0 && (
             <Select
               value={selectedLanguage}
               onValueChange={setSelectedLanguage}
             >
-              <SelectTrigger className="w-32 h-8 bg-slate-800 border-slate-600 text-slate-300">
+              <SelectTrigger className="text-xs py-0! px-2! text-white h-6!">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -80,12 +108,11 @@ export function CodeExample({
               </SelectContent>
             </Select>
           )}
-
           <Button
             variant="ghost"
             size="sm"
             onClick={handleCopy}
-            className="text-slate-400 hover:text-slate-200"
+            className="text-white hover:bg-background/90"
           >
             {copied ? (
               <Check className="w-4 h-4" />
@@ -97,11 +124,7 @@ export function CodeExample({
       </div>
 
       {/* Code Display */}
-      <div className="p-4 text-sm font-mono text-slate-100">
-        <pre className="overflow-x-auto whitespace-pre-wrap wrap-break-word">
-          <code>{code}</code>
-        </pre>
-      </div>
+      <ShikiCodeBlock lang={selectedLanguage} code={code} />
     </div>
   );
 }

@@ -32,8 +32,7 @@ export function APIHeadline({
 }: APIIntroSectionProps) {
   return (
     <div className="scroll-mt-20 space-y-6">
-      {/* Header with title, version, and actions */}
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-4 gap-8">
         <div className="col-span-2">
           <div className="flex items-baseline gap-2">
             <h1 className="text-3xl font-bold text-foreground">{title}</h1>
@@ -52,10 +51,9 @@ export function APIHeadline({
             </a>
           )}
         </div>
-
         {endpoints.length > 0 && (
-          <div className="sticky top-24 bg-card rounded-lg border border-border overflow-hidden">
-            <div className="px-4 py-3 bg-muted border-b border-border">
+          <div className="sticky top-24 bg-card rounded-lg border border-border overflow-hidden col-span-2">
+            <div className="px-3 py-2 bg-muted border-b border-border">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide m-0!">
                 Endpoints
               </h3>

@@ -1,4 +1,4 @@
-import { ResponseExample } from "./api-response";
+import { APIResponse } from "./api-response";
 import { CodeExample } from "./code-example";
 import { ErrorCodes } from "./error-codes";
 import { PropertyItem } from "./property-item";
@@ -39,13 +39,13 @@ export function APIEndpointContent({
     >
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-0!">{title}</h2>
           {description && (
-            <p className="mt-2 text-muted-foreground">{description}</p>
+            <p className="mt-2 text-muted-foreground text-sm">{description}</p>
           )}
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-8">
+      <div className="grid grid-cols-4 gap-8">
         <div className="lg:col-span-2 space-y-8">
           {parameters.length > 0 && (
             <div>
@@ -89,7 +89,7 @@ export function APIEndpointContent({
             </div>
           )}
         </div>
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-2">
           <div className="sticky top-24 space-y-4">
             <CodeExample
               endpoint={endpoint}
@@ -97,7 +97,10 @@ export function APIEndpointContent({
               examples={codeExamples}
               defaultLanguage={codeExamples[0]?.language}
             />
-            <ResponseExample data={responseExample} title="RESPONSE" />
+            <APIResponse 
+              data={responseExample} 
+              title="RESPONSE" 
+            />
           </div>
         </div>
       </div>

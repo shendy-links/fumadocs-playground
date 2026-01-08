@@ -30,6 +30,7 @@
     "next-themes": "^0.4.6",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-shiki": "^0.9.1",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "scroll-into-view-if-needed": "^3.1.0",

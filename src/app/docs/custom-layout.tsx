@@ -29,6 +29,7 @@ export default function CustomLayout({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const layout = document.getElementById("nd-docs-layout");
+
     const content = document.getElementById("nd-page");
 
     if (!layout || !content) return;
@@ -46,8 +47,8 @@ export default function CustomLayout({ children }: { children: ReactNode }) {
       if (isApiActiveRef.current) return;
       isApiActiveRef.current = true;
 
-      content.classList.add("max-w-none");
-      content.style.width = "calc(125% + var(--fd-toc-width))";
+      content.classList.add("max-w-none", "ml-8", "w-[1920px]:ml-14");
+      content.style.width = "calc(100% + var(--fd-toc-width))";
     };
 
     const restoreDefault = () => {
