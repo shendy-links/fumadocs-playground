@@ -13,15 +13,13 @@ export function APIResponse({
 }: ResponseExampleProps) {
   const jsonString = JSON.stringify(data, null, 2);
   return (
-    <div className="bg-muted dark:bg-muted-foreground rounded-lg overflow-hidden border">
-      <div className="flex items-center justify-between px-3 py-2 border-b ">
-        <span className="font-semibold text-xs">{title}</span>
+    <div className="bg-foreground/90 dark:bg-background/90 rounded-lg overflow-hidden border dark:border-b-background/90">
+      <div className="flex items-center justify-between px-3 py-2 border-b border-b-foreground/90 dark:border-b-background/90">
+        <div className="flex items-center gap-3">
+          <span className="text-white font-semibold text-xs">{title}</span>
+        </div>
       </div>
-      <ShikiCodeBlock
-        lang={"json"}
-        code={jsonString}
-        theme={{ light: "github-light", dark: "github-light" }}
-      />
+      <ShikiCodeBlock lang={"json"} code={jsonString} />
     </div>
   );
 }

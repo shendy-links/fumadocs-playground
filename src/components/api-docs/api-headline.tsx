@@ -1,6 +1,6 @@
 "use client";
 
-import type React from "react";
+import Link from "next/link";
 
 interface APIIntroSectionProps {
   title: string;
@@ -11,6 +11,7 @@ interface APIIntroSectionProps {
   endpoints: {
     method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
     path: string;
+    url: string;
   }[];
 }
 
@@ -32,7 +33,7 @@ export function APIHeadline({
 }: APIIntroSectionProps) {
   return (
     <div className="scroll-mt-20 space-y-6">
-      <div className="grid grid-cols-4 gap-8">
+      <div className="grid grid-cols-4 gap-5">
         <div className="col-span-2">
           <div className="flex items-baseline gap-2">
             <h1 className="text-3xl font-bold text-foreground">{title}</h1>
@@ -58,9 +59,9 @@ export function APIHeadline({
                 Endpoints
               </h3>
             </div>
-            <div className="p-4 space-y-2 max-h-96 overflow-y-auto">
+            <div className="p-4 space-y-2 overflow-y-auto">
               {endpoints.map((endpoint, idx) => (
-                <div key={idx} className="flex items-start gap-2 group">
+                <div key={idx} className="flex items-center gap-2 group">
                   <span
                     className={`px-2 py-1 rounded text-xs font-semibold border whitespace-nowrap ${
                       METHOD_COLORS[endpoint.method] ||
@@ -69,9 +70,9 @@ export function APIHeadline({
                   >
                     {endpoint.method}
                   </span>
-                  <code className="text-xs font-mono text-foreground break-all group-hover:text-primary transition-colors">
+                  <Link href={endpoint.url} className="text-xs no-underline">
                     {endpoint.path}
-                  </code>
+                  </Link>
                 </div>
               ))}
             </div>

@@ -31,7 +31,7 @@ const METHOD_COLORS: Record<string, string> = {
 export function ShikiCodeBlock({
   code,
   lang,
-  theme = { light: "github-dark", dark: "github-light" },
+  theme = { light: "catppuccin-mocha", dark: "catppuccin-mocha" },
 }: {
   code: string;
   lang: string;
@@ -39,7 +39,6 @@ export function ShikiCodeBlock({
 }) {
   return (
     <ShikiHighlighter
-      tabindex={-1}
       language={lang}
       className={cn(
         "text-sm focus:ring-none focus:outline-none focus:ring-0 [&_pre]:focus:outline-none [&_pre]:focus:ring-0 [&_pre]:focus-visible:outline-none [&_pre]:focus-visible:ring-0",
@@ -81,10 +80,9 @@ export function CodeExample({
       <div className="flex items-center justify-between px-3 py-1 border-b border-b-foreground/90 dark:border-b-background/90">
         <div className="flex items-center gap-3">
           <span
-            className={cn(
-              METHOD_COLORS[method],
-              "px-3 py-1 rounded text-xs font-semibold border bg-white"
-            )}
+            className={`px-2 py-1 rounded text-xs font-semibold border whitespace-nowrap ${
+              METHOD_COLORS[method] || "bg-gray-500/10 text-gray-700"
+            }`}
           >
             {method}
           </span>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import type { ObjectProperty } from "./types";
 import { Badge } from "@/components/ui/badge";
+import { Separator } from "@radix-ui/react-select";
 
 interface PropertyItemProps {
   property: ObjectProperty;
@@ -20,26 +21,22 @@ export function PropertyItem({
   const hasNested = property.child && property.child.length > 0;
 
   return (
-    <div id="property-item" className="border-b border-border last:border-b-0 last:mb-0!">
+    <div
+      id="property-item"
+      className="border-b border-border last:border-b-0 last:mb-0!"
+    >
       <div>
         {/* Property name and type - NOT collapsible */}
         <div className="flex items-start gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-3 flex-wrap">
-              <code className="text-xs text-foreground">{property.name}</code>
-              <Badge
-                variant="secondary"
-                className="bg-card text-card-foreground border border-border text-xs"
-              >
-                {property.type}
-              </Badge>
-              {property.required && (
-                <span className="text-destructive text-xs font-semibold">Required</span>
-              )}
+              <span className="font-semibold text-sm text-foreground">{property.name}</span>
+              <span className="text-xs">{property.type}</span>
+              {property.required && <span className="text-destructive text-xs font-semibold">Required</span>}
             </div>
 
             {/* Description */}
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-2 text-sm text-muted-foreground mb-2">
               {property.description}
             </p>
 
@@ -59,14 +56,17 @@ export function PropertyItem({
                   <p className="text-muted-foreground mb-2 font-semibold">
                     Possible enum values
                   </p>
-                  <div className="space-y-2 bg-card rounded-lg p-3 border border-border">
+                  <div className="space-y-4 bg-card rounded-lg p-3 border border-border">
                     {property.enum.map((option) => (
-                      <div key={option.value} className="space-y-1">
-                        <code className="font-mono text-xs text-foreground block">
+                      <div
+                        key={option.value}
+                        className="pb-2 border-b last:border-none last:pb-0"
+                      >
+                        <code className="font-mono text-xs text-foreground w-fit mt-4">
                           {option.value}
                         </code>
                         {option.description && (
-                          <p className="text-muted-foreground text-xs pl-1 last:mb-0">
+                          <p className="text-muted-foreground text-xs pl-1 my-1 last:mb-0">
                             {option.description}
                           </p>
                         )}
