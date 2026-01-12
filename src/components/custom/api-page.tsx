@@ -14,6 +14,6 @@ const options = {
   },
 };
 
-export const MCPStoreAPIPage = createAPIPage(apiSource.example, { client: undefined });
+export const MCPStoreAPIPage = createAPIPage(apiSource.example, options);
 
 export const SDKStoreAPIPage = createAPIPage(apiSource.sdk, options);

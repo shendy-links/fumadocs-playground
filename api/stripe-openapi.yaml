@@ -1,0 +1,98 @@
+openapi: 3.0.3
+
+info:
+  title: Accounts API
+  version: "1.0.0"
+  description: Manage accounts 
+
+paths:
+  /accounts:
+    get:
+      tags: [Accounts]
+      summary: List accounts
+      description: Returns a list of accounts
+      responses:
+        "200":
+          description: A list of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Account"
+
+  /accounts/{account_id}:
+    get:
+      tags: [Accounts]
+      summary: Retrieve an account
+      description: Retrieves the details of an existing account.
+      operationId: retrieveAccount
+      parameters:
+        - name: account_id
+          description: |
+            The unique identifier of the account.
+            This value is assigned by the system when the account is created and
+            is typically prefixed with `acct_`.
+          in: path
+          required: true
+          schema:
+            type: string
+            example: acct_123
+      responses:
+        "200":
+          description: Account object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+              examples:
+                default:
+                  summary: Standard account example
+                  value:
+                    id: acct_123
+                    object: account
+                    type: standard
+                    country: US
+                    email: owner@example.com
+                    charges_enabled: true
+                    payouts_enabled: true
+                    created: 1710000000
+        "404":
+          description: Account not found
+
+components:
+  schemas:
+    Account:
+      type: object
+      required: [id, type, email, created_at]
+      properties:
+        id:
+          type: string
+          example: acct_123
+          description: Unique identifier for the account
+        type:
+          type: string
+          enum: [standard, express, custom]
+          oneOf:
+            - const: standard
+              description: A full standard Stripe account
+            - const: express
+              description: A lightweight Stripe account for fast onboarding
+            - const: custom
+              description: A fully custom account with custom flows
+          example: standard
+          description: Type of account (standard, express, or custom)
+        email:
+          type: string
+          format: email
+          example: owner@example.com
+          description: Email address associated with the account
+        country:
+          type: string
+          example: US
+          description: Two-letter ISO country code of the account
+        created_at:
+          type: string
+          format: date-time
+          example: "2024-01-01T12:00:00Z"
+          description: Timestamp when the account was created

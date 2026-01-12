@@ -7,7 +7,7 @@ import { apiSource } from "./openapi";
 export const source = loader(
   multiple({
     docs: docs.toFumadocsSource(),
-    "api-references": await openapiSource(apiSource.sdk, {
+    "api-references": await openapiSource(apiSource.example, {
       baseDir: "/sdk/api-references",
     }),
   }),

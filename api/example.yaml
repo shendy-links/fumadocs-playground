@@ -1,96 +1,236 @@
 openapi: 3.1.0
 
 info:
-  title: Example API
-  description: API for managing users
-  version: 1.0.0
+  title: Stripe Accounts API
+  version: "2024-01-01"
+  description: |
+    Accounts represent entities on Stripe, including businesses and individuals.
+    This API allows you to create, retrieve, update, list, and close accounts.
 
 servers:
-  - url: https://api.example.com
-    description: Production server
-  - url: https://staging-api.example.com
-    description: Staging server
+  - url: https://api.stripe.com/v1
+    description: Stripe API base URL
 
 tags:
-  - name: Users
-    description: User management endpoints
+  - name: Accounts
+    description: Create and manage accounts
 
 paths:
-  /users:
+  /accounts:
     get:
-    tags: [Users]
-    summary: List users
-    description: Returns a list of users
-    responses:
-      "200":
-        description: A list of users
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/User"
+      tags: [Accounts]
+      summary: List accounts
+      operationId: listAccounts
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+        - in: query
+          name: starting_after
+          schema:
+            type: string
+            example: acct_123
+      responses:
+        "200":
+          description: A paginated list of accounts
+          content:
+            application/json:
+              examples:
+                default:
+                  summary: List response
+                  value:
+                    object: list
+                    data:
+                      - id: acct_123
+                        object: account
+                        type: standard
+                        country: US
+                        email: owner@example.com
+                        created: 1710000000
+                    has_more: false
+              schema:
+                $ref: "#/components/schemas/AccountList"
 
     post:
-      tags: [Users]
-      summary: Create user
+      tags: [Accounts]
+      summary: Create an account
+      operationId: createAccount
       requestBody:
         required: true
         content:
-          application/json:
+          application/x-www-form-urlencoded:
             schema:
-              $ref: "#/components/schemas/CreateUser"
+              $ref: "#/components/schemas/AccountCreateParams"
       responses:
-        "201":
-          description: User created
+        "200":
+          description: Account created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/Account"
 
-  /users/{id}:
+  /accounts/{account_id}:
     get:
-      tags: [Users]
-      summary: Get user by ID
+      tags: [Accounts]
+      summary: Retrieve an account
+      operationId: retrieveAccount
       parameters:
-        - name: id
-          in: path
+        - in: path
+          name: account_id
           required: true
           schema:
             type: string
+            example: acct_123
       responses:
         "200":
-          description: User found
+          description: Account object
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-        "404":
-          description: User not found
+                $ref: "#/components/schemas/Account"
+
+    post:
+      tags: [Accounts]
+      summary: Update an account
+      operationId: updateAccount
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            type: string
+            example: acct_123
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AccountUpdateParams"
+      responses:
+        "200":
+          description: Account updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Account"
+
+    delete:
+      tags: [Accounts]
+      summary: Close an account
+      operationId: closeAccount
+      parameters:
+        - in: path
+          name: account_id
+          required: true
+          schema:
+            type: string
+            example: acct_123
+      responses:
+        "200":
+          description: Account closed
+          content:
+            application/json:
+              examples:
+                default:
+                  value:
+                    id: acct_123
+                    object: account
+                    deleted: true
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  object:
+                    type: string
+                  deleted:
+                    type: boolean
 
 components:
   schemas:
-    User:
+    Account:
       type: object
-      required: [id, name, email]
+      required:
+        - id
+        - object
+        - type
+        - country
+        - created
       properties:
         id:
           type: string
-          example: "usr_123"
-        name:
+          example: acct_123
+        object:
           type: string
-          example: "John Doe"
+          example: account
+        type:
+          type: string
+          enum: [standard, express, custom]
+          example: standard
+        country:
+          type: string
+          example: US
         email:
           type: string
-          format: email
-          example: "john@example.com"
+          example: owner@example.com
+        charges_enabled:
+          type: boolean
+          example: true
+        payouts_enabled:
+          type: boolean
+          example: true
+        created:
+          type: integer
+          example: 1710000000
 
-    CreateUser:
+    AccountList:
       type: object
-      required: [name, email]
+      required: [object, data, has_more]
       properties:
-        name:
+        object:
           type: string
+          example: list
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
+        has_more:
+          type: boolean
+          example: false
+
+    AccountCreateParams:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [standard, express, custom]
+          example: express
+        country:
+          type: string
+          example: US
         email:
           type: string
-          format: email
+          example: owner@example.com
+
+    AccountUpdateParams:
+      type: object
+      properties:
+        email:
+          type: string
+          example: updated@example.com
+        business_profile[mcc]:
+          type: string
+          example: "5734"
+
+    AccountEventType:
+      type: string
+      enum:
+        - account.created
+        - account.updated
+        - account.external_account.created
+        - account.external_account.deleted
+        - account.application.authorized
+        - account.application.deauthorized

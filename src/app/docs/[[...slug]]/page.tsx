@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 import { createRelativeLink } from "fumadocs-ui/mdx";
 import { ReactNode } from "react";
 import { SDKStoreAPIPage } from "@/components/custom/api-page";
+import { CustomAPIPage } from "@/components/api-docs/custom-api-page";
 
 const DocsLayout = ({
   title,
@@ -40,7 +41,10 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
     return (
       <DocsLayout title={page.data.title} description={page.data.description}>
         {page.data.type === "api-references" && (
-          <SDKStoreAPIPage {...page.data.getAPIPageProps()} />
+          <CustomAPIPage
+            pageProps={page.data.getAPIPageProps()}
+            schema={page.data.getSchema()}
+          />
         )}
       </DocsLayout>
     );
